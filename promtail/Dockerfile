@@ -12,12 +12,15 @@ ARG BUILD_ARCH=amd64
 # https://github.com/mikefarah/yq/releases
 ARG YQ_VERSION=4.27.3
 
+# Add backports for newer libsystemd-dev
+RUN echo "deb http://deb.debian.org/debian bullseye-backports main" >> /etc/apt/sources.list
+
 # Add yq and tzdata (required for the timestamp stage)
 RUN set -eux; \
     apt-get update; \
     apt-get install -qy --no-install-recommends \ 
         tar=1.34+dfsg-1 \
-        libsystemd-dev=247.3-7+deb11u1 \
+        libsystemd-dev/bullseye-backports \
         ; \
     update-ca-certificates; \
     \
